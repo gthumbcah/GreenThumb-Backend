@@ -17,13 +17,22 @@ const closeConnection = () => {
 }
 
 const usersSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    password: String,
-    admin: Boolean
+    name: { type: String, required: true},
+    email: { type: String, required: true},
+    password: { type: String, required: true},
+    admin: { type: Boolean, required: true}
 })
 
 const UserModel = mongoose.model('User', usersSchema)
 
+const jobsSchema = new mongoose.Schema({
+    customerDetails: { type: Array, required: true},
+    toolsNeeded: { type: Array },
+    users: [{ type: mongoose.ObjectId, ref: 'User' }],
+    tasks: { type: Array}
+})
 
-export { closeConnection, UserModel }
+const JobModel = mongoose.model('Job', jobsSchema)
+
+
+export { closeConnection, UserModel, JobModel }
