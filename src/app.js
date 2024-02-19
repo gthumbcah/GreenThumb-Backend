@@ -4,9 +4,7 @@ import { UserModel } from './db.js'
 const app = express()
 
 app.get('/', (req, res) => {
-    res.send('<h2>Hello!</h2>') 
+    res.send({info : 'Hello!'}) 
 })
-
-app.use('/entries', entryRoutes)
 
 export default app
