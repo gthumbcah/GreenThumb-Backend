@@ -1,7 +1,8 @@
-import app from './app.js'
+import app from '../app.js'
 import request from 'supertest'
 
 describe('App Test', () => {
+
     // test on the entry route
     test('GET /', async () => {
         const res = await request(app).get('/')
@@ -10,7 +11,59 @@ describe('App Test', () => {
         expect(res.body.info).toBe('Hello!')
     })
 
-    // tests user routes
+    describe('Login POST test', () => {
+
+        let user, id
+
+        beforeAll(async () => {
+            user = await request(app).post('/users').send({
+                name: 'tester',
+                email: 'tester@email.com',
+                password: 'tester'
+            })
+        })
+
+        // User created successfully
+        test('Returns JSON content', async () => {
+            expect(user.status).toBe(201)
+            expect(user.header['content-type']).toContain('json')
+            expect(user.body.name).toBe('tester')
+        })
+
+        // invalid email
+        test('/login with invalid email', async () => {
+            const login = await request(app).post('/login').send({
+                email: 'failtest',
+                password: 'tester'
+            })
+            expect(login.status).toBe(404)
+            expect(login.header['content-type']).toContain('json')
+            expect(login.body.message).toBe('User not found')
+        })
+
+        // invalid Password
+        test('/login with invalid Password', async () => {
+            const login = await request(app).post('/login').send({
+                email: 'tester@email.com',
+                password: 'failtest'
+            })
+            expect(login.status).toBe(403)
+            expect(login.header['content-type']).toContain('json')
+            expect(login.body.message).toBe('Invalid password')
+        })
+
+        // Successful login
+        test('/login', async () => {
+            const login = await request(app).post('/login').send({
+                    email: 'tester@email.com',
+                    password: 'tester'
+                })
+            const token = login.body.token
+            expect(login.status).toBe(200)
+            expect(login.body).toHaveProperty('token')
+        })        
+    })
+
     describe('User CRUD', () => {
 
         let res, id
