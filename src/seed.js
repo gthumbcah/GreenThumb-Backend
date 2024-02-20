@@ -2,7 +2,7 @@ import { UserModel, JobModel, closeConnection } from './db.js'
 
 const users = [
     { name: 'John', email: 'john@email.com', password: 'john', admin : true },
-    { name: 'David', email: 'david@email.com', password: 'david', admin : false}
+    { name: 'David', email: 'david@email.com', password: 'david'}
 ]
 
 await UserModel.deleteMany()

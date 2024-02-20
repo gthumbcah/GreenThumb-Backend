@@ -1,7 +1,7 @@
 import express from 'express'
-import { UserModel } from './db.js'
 import cors from 'cors'
 import userRoutes from './routes/user_route.js'
+import jobRoutes from './routes/job_routes.js'
 
 const app = express()
 
@@ -13,6 +13,8 @@ app.get('/', (req, res) => {
     res.send({info : 'Hello!'}) 
 })
 
-app.use('user', userRoutes)
+app.use('/users', userRoutes)
+
+app.use('/jobs', jobRoutes)
 
 export default app
