@@ -1,4 +1,4 @@
-import { UserModel, JobModel, closeConnection } from './db.js'
+import { UserModel, JobModel, TimeSheetModel, closeConnection } from './db.js'
 
 const users = [
     { name: 'John', email: 'john@email.com', password: '$2a$10$4FHag4GzmCzN6QGwN1gRMuIp3FdaVnRnTgKsgBH0TM/hRjaOkqZKC', admin : true }, // password: john (hashed)
@@ -12,7 +12,13 @@ console.log('Users Added')
 
 const jobs = [
     {
-        customerDetails: ['Name', 'Mob', 'Address'],
+        customerDetails: ['Name1', 'Mob', 'Address'],
+        toolsNeeded: ['Mower'],
+        users: [ u[1]],
+        tasks: ['Task1']
+    },
+    {
+        customerDetails: ['Name2', 'Mob', 'Address'],
         toolsNeeded: ['Mower'],
         users: [ u[1]],
         tasks: ['Task1']
@@ -21,8 +27,18 @@ const jobs = [
 
 await JobModel.deleteMany()
 console.log('Jobs deleted')
-await JobModel.insertMany(jobs)
+const j = await JobModel.insertMany(jobs)
 console.log('Jobs Added')
+
+const timeSheet = [
+    { users: u[1], job: j[0], total: 6 },
+    { users: u[1], job: j[1], total: 12 }
+]
+
+await TimeSheetModel.deleteMany()
+console.log('TimeSheets deleted')
+await TimeSheetModel.insertMany(timeSheet)
+console.log('TimeSheets Added')
 
 
 closeConnection()

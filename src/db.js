@@ -29,10 +29,22 @@ const jobsSchema = new mongoose.Schema({
     customerDetails: { type: Array, required: true},
     toolsNeeded: { type: Array },
     users: [{ type: mongoose.ObjectId, ref: 'User' }],
-    tasks: { type: Array}
+    tasks: { type: Array }
 })
 
 const JobModel = mongoose.model('Job', jobsSchema)
 
+const timesheetsSchema = new mongoose.Schema({
+    users: [{ type: mongoose.ObjectId, ref: 'User', required: true}],
+    job: { type: mongoose.ObjectId, ref: 'Job', required: true},
+    // clock_in : {  }
+    // clock_out: {  }
+    // Front-end can return the math???
+    total : { type: Number, required: true } // for development only    
+    
+})
 
-export { closeConnection, UserModel, JobModel }
+const TimeSheetModel = mongoose.model('Timesheet', timesheetsSchema)
+
+
+export { closeConnection, UserModel, JobModel, TimeSheetModel }
