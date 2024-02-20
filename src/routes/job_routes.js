@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { JobModel } from "../db.js"
+import { JobModel, UserModel } from "../db.js"
 
 
 const router = Router()
@@ -33,6 +33,8 @@ router.get('/:id', async (req, res) => {
 // update
 router.put('/:id', async (req, res) => {
     const job = await JobModel.findById(req.params.id)
+    const users = await UserModel.find()
+    // need to make handler for if user id added isnt a user id
     if (job) {
         const updatedJob = await JobModel.findByIdAndUpdate(req.params.id, req.body, {new:true})
         res.send(updatedJob)
