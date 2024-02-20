@@ -29,7 +29,9 @@ const jobsSchema = new mongoose.Schema({
     customerDetails: { type: Array, required: true},
     toolsNeeded: { type: Array },
     users: [{ type: mongoose.ObjectId, ref: 'User' }],
-    tasks: { type: Array }
+    tasks: { type: Array },
+    jobActive: { type: Boolean, default: true },
+    dates: { type: Array } // needs editted after depending on needs of calendar
 })
 
 const JobModel = mongoose.model('Job', jobsSchema)
