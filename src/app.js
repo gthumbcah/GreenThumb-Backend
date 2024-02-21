@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import userRoutes from './routes/user_routes.js'
 import jobRoutes from './routes/job_routes.js'
+import authRoutes from './routes/auth_routes.js'
 
 const app = express()
 
@@ -12,6 +13,8 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.send({info : 'Hello!'}) 
 })
+
+app.use('/login', authRoutes)
 
 app.use('/users', userRoutes)
 
