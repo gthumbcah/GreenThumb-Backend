@@ -2,14 +2,15 @@ import { Router } from "express"
 import { JobModel, UserModel } from "../db.js"
 
 
+
 const router = Router()
 
-// View all Jobs
+// View all Jobs -- Admin Only
 router.get('/', async (req, res) => {
     res.send(await JobModel.find().populate('users'))
 })
 
-// create job
+// create job  --- Admin Only - **
 router.post('/', async (req, res) => {
     try {
         const newJob = await JobModel.create(req.body)
@@ -20,7 +21,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-// read 1 job
+// read 1 job  -- ((Admin and Employee))
 router.get('/:id', async (req, res) => {
     const job = await JobModel.findById(req.params.id).populate('users')
     if (job) {
@@ -30,7 +31,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-// update
+// update -- ((Admin and Employee))
 router.put('/:id', async (req, res) => {
     const job = await JobModel.findById(req.params.id)
     const users = await UserModel.find()
@@ -43,7 +44,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-//delete
+//delete ( Admin Only)
 router.delete('/:id', async (req, res) => {
     const job = await JobModel.findById(req.params.id)
     if (job) {
