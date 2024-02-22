@@ -2,6 +2,7 @@ import { Router } from "express"
 import { UserModel } from "../db.js"
 import bcrypt from 'bcrypt'
 import e_auth from '../middleware/e_auth.js'
+import { check, validationResult } from "express-validator";
 
 
 const router = Router()
@@ -11,8 +12,28 @@ router.get('/',e_auth, async (req, res) => {
     res.send(await UserModel.find(req.body._id))
 })
 
+// Validation for user creation
+const newUserValidate = [
+    check("email", "Please use a valid email address")
+        .trim()
+        .escape()
+        .isEmail()
+        .normalizeEmail(),
+    check("password", "Please ensure password is at least 10 characters and has a number")
+        .isLength(10)
+        .trim()
+        .escape(),
+        // .matches(/\d/)
+    check("name", "Name must be at least 3 characters")
+        .isLength({min: 3})
+        .trim()
+        .escape()
+]
+
+
 // create user (Admin only)
 router.post('/',e_auth, async (req, res) => {
+    
     try {
         const hashedPassword = await bcrypt.hash(req.body.password,10)
 
