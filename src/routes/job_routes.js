@@ -1,13 +1,16 @@
 import { Router } from "express"
 import { JobModel, UserModel } from "../db.js"
+import j_auth from '../middleware/j_auth.js'
+
 
 
 
 const router = Router()
 
-// View all Jobs -- Admin Only
+// View all Jobs -- Admin Only (onwers)
 router.get('/', async (req, res) => {
-    res.send(await JobModel.find().populate('users'))
+    // res.send(await JobModel.find().populate('users'))
+    res.send(req.jobs)
 })
 
 // create job  --- Admin Only - **
@@ -21,7 +24,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-// read 1 job  -- ((Admin and Employee))
+// read 1 job  -- ((Admin and owner))
 router.get('/:id', async (req, res) => {
     const job = await JobModel.findById(req.params.id).populate('users')
     if (job) {
@@ -31,7 +34,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-// update -- ((Admin and Employee))
+// update -- (Admin)
 router.put('/:id', async (req, res) => {
     const job = await JobModel.findById(req.params.id)
     const users = await UserModel.find()

@@ -1,19 +1,18 @@
 import { Router } from "express"
 import { UserModel } from "../db.js"
 import bcrypt from 'bcrypt'
-import e_auth from "../middleware/e_auth.js";
-import m_auth from "../middleware/m_auth.js";
+import e_auth from '../middleware/e_auth.js'
 
 
 const router = Router()
 
 // View all users (Admin only ( For Admin to select user to delete from list) +  Read Employee timesheet info)
-router.get('/', async (req, res) => {
-    res.send(await UserModel.find())
+router.get('/',e_auth, async (req, res) => {
+    res.send(await UserModel.find(req.body._id))
 })
 
 // create user (Admin only)
-router.post('/', async (req, res) => {
+router.post('/',e_auth, async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password,10)
 
@@ -38,10 +37,9 @@ router.post('/', async (req, res) => {
     }
 })
 
-// read 1 user  (Admin and Employee) - (Admin to read employee info / CICO from Jobs DB) 
-//                                   - (Employee to read there own info)
+// read 1 user  (Admin and owner only)
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',e_auth, async (req, res) => {
     const user = await UserModel.findById(req.params.id)
     if (user) {
         res.send(user)
@@ -50,17 +48,19 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-// update (Employee) - (Update pword when created or other details - cant change admin status)
+// update (owner only) - (Update pword when created or other details - cant change admin status)
 
-router.put('/:id', async (req, res) => {
-    
-    const hashedPassword = await bcrypt.hash(req.body.password,10)
+router.put('/:id', e_auth, async (req, res) => {
+
     const user = await UserModel.findById(req.params.id)
+    const hashedPassword = await bcrypt.hash(req.body.password,10)
+    
 
 
     if (user) {
         const updatedUser = await UserModel.findByIdAndUpdate(req.params.id,
-            {
+            {   
+                id: req.body._id,
                 name: req.body.name,
                 email: req.body.email,
                 password: hashedPassword,
@@ -74,7 +74,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-//delete  (Admin) - (delete user chosen from list )
+//delete  (Admin only) - 
 
 router.delete('/:id', async (req, res) => {
     const user = await UserModel.findById(req.params.id)
