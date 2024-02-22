@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 // create job  --- Admin Only - **
 router.post('/', async (req, res) => {
     try {
-        const newJob = await JobModel.create(req.body)
+        const newJob = await (await JobModel.create(req.body)).populate('users')
         res.send(newJob)
     }
     catch (err) {
@@ -40,7 +40,7 @@ router.put('/:id', async (req, res) => {
     const users = await UserModel.find()
     // need to make handler for if user id added isnt a user id
     if (job) {
-        const updatedJob = await JobModel.findByIdAndUpdate(req.params.id, req.body, {new:true})
+        const updatedJob = await JobModel.findByIdAndUpdate(req.params.id, req.body, {new:true}).populate('users')
         res.send(updatedJob)
     } else{
         res.status(400).send({ 'Error': 'Job not found'})

@@ -11,9 +11,11 @@ describe('App Test', () => {
         expect(res.body.info).toBe('Hello!')
     })
 
+
+    // Login API ---------------------------------------------------------
     describe('Login POST test', () => {
 
-        let user, id
+        let user
 
         beforeAll(async () => {
             user = await request(app).post('/users').send({
@@ -64,6 +66,7 @@ describe('App Test', () => {
         })        
     })
 
+    // User API ---------------------------------------------------------
     describe('User CRUD', () => {
 
         let res, id
@@ -79,11 +82,12 @@ describe('App Test', () => {
 
 
         // Confirms the POST is working
-        test('Returns JSON content', () => {
+        test('Returns JSON content | confirms user post', () => {
             expect(res.status).toBe(201)
             expect(res.header['content-type']).toContain('json')
             expect(res.body.name).toBe('tester')
             expect(res.body.id).toBe(id)
+            
         })
 
         // Confirms the GET by id is working
@@ -114,5 +118,78 @@ describe('App Test', () => {
 
         // talk with team if delete is need because after each is deleting???
     })
+
+    // Job API ----------------------------------------------------------------
+    describe('Job CRUD', () => {
+
+        let res, userId, job, jobId, currentJob, currentJobUser
+
+        beforeEach(async () => {
+            res = await request(app).post('/users').send({
+                name: 'tester',
+                email: 'tester@email.com',
+                password: 'tester',
+            })
+            userId = res.body.id
+            job = await request(app).post('/jobs').send({
+                    customerDetails: ['Name1', 'Mob', 'Address'],
+                    toolsNeeded: ['Mower'],
+                    users: [ userId ],
+                    tasks: ['Task1']
+            })
+            jobId = job.body._id
+            currentJob = await request(app).get(`/jobs/${jobId}`)
+            currentJobUser = currentJob.body.users
+        })
+
+        // function to check job object
+        function jobTest(jobResponse, expectedDetails, expectedTools, expectedUserId, expectedTasks, expectedId) {
+            expect(jobResponse.status).toBe(200)
+            expect(jobResponse.header['content-type']).toContain('json')
+            expect(jobResponse.body.customerDetails).toEqual(expect.arrayContaining(expectedDetails))
+            expect(jobResponse.body.toolsNeeded).toEqual(expect.arrayContaining(expectedTools))
+            expect(jobResponse.body.users).toEqual(expect.arrayContaining(expectedUserId))
+            expect(jobResponse.body.tasks).toEqual(expect.arrayContaining(expectedTasks))
+            expect(jobResponse.body._id).toBe(expectedId)
+        }
+
+        // Confirms the user POST is working
+        test('confirms user post returns JSON content', () => {
+            expect(res.status).toBe(201)
+            expect(res.header['content-type']).toContain('json')
+            expect(res.body.name).toBe('tester')
+            expect(res.body.id).toBe(userId)           
+        })
+
+        // Confirms the job POST is working
+        test('confirms job post returns JSON content', async () => {            
+            jobTest(job, ['Name1', 'Mob', 'Address'], ['Mower'], currentJobUser, ['Task1'], jobId)
+        })
+
+        // Confirms the job GET by id is working
+        test('READ /jobs/:id', async () => {
+            jobTest(currentJob, ['Name1', 'Mob', 'Address'], ['Mower'], currentJobUser, ['Task1'], jobId)
+        })
+
+            
+
+        // Confirms the jobs PUT by id is working
+        test('UPDATE /jobs/:id', async () => {
+            const j = await request(app).put(`/jobs/${jobId}`).send({
+                customerDetails: ['changeName', 'changeMob', 'changeAddress'],
+                toolsNeeded: ['changeTool'],
+                users: [ userId ],
+                tasks: ['changeTask']
+            })
+            jobTest(j, ['changeName', 'changeMob', 'changeAddress'], ['changeTool'], currentJobUser, ['changeTask'], jobId)
+        })
+
+        afterEach(() => {
+            // Cleanup
+            request(app).delete(`/jobs/${jobId}`)
+            request(app).delete(`/users/${userId}`)
+        })
+    })
+
 })
 
