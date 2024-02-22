@@ -2,14 +2,15 @@ import { Router } from "express"
 import { UserModel } from "../db.js"
 import bcrypt from 'bcrypt'
 import e_auth from '../middleware/e_auth.js'
-import { check, validationResult } from "express-validator";
+import { check, validationResult } from 'express-validator';
+
 
 
 const router = Router()
 
 // View all users (Admin only ( For Admin to select user to delete from list) +  Read Employee timesheet info)
 router.get('/',e_auth, async (req, res) => {
-    res.send(await UserModel.find(req.body._id))
+    res.send(await UserModel.find({}))
 })
 
 // Validation for user creation
@@ -20,29 +21,40 @@ const newUserValidate = [
         .isEmail()
         .normalizeEmail(),
     check("password", "Please ensure password is at least 10 characters and has a number")
-        .isLength(10)
+        // .isLength(10)
         .trim()
         .escape(),
-        // .matches(/\d/)
+        // .matches(/\d/) // macthes a number
     check("name", "Name must be at least 3 characters")
         .isLength({min: 3})
         .trim()
-        .escape()
+        .escape(),
+    check("email").custom(async(value) =>{
+        const existingEmail = await UserModel.findOne({email: value})
+        if (existingEmail){
+            throw new Error("Email already exists , please check Employee list")
+        }
+    })
 ]
 
 
 // create user (Admin only)
-router.post('/',e_auth, async (req, res) => {
-    
+router.post('/', e_auth, newUserValidate, async (req, res) => {
     try {
-        const hashedPassword = await bcrypt.hash(req.body.password,10)
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         const newUser = new UserModel({
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
-            admin: req.body.admin,
-          });
+            admin: req.body.admin
+        });
 
         const savedUser = await newUser.save();
 
@@ -51,12 +63,11 @@ router.post('/',e_auth, async (req, res) => {
             name: savedUser.name,
             email: savedUser.email,
             password: savedUser.password
-        })
+        });
+    } catch (err) {
+        res.status(400).send({ err: err.message });
     }
-    catch (err) {
-        res.status(400).send({ err: err.message })
-    }
-})
+});
 
 // read 1 user  (Admin and owner only)
 
