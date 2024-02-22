@@ -19,22 +19,26 @@ const newUserValidate = [
         .trim()
         .escape()
         .isEmail()
-        .normalizeEmail(),
+        .normalizeEmail()
+        .custom(async(value) =>{ // Ensures no dplicate emails
+            const existingEmail = await UserModel.findOne({email: value})
+            if (existingEmail){
+                throw new Error("Email already exists , please check Employee list")
+            }
+        }),
     check("password", "Please ensure password is at least 10 characters and has a number")
         // .isLength(10)
         .trim()
         .escape(),
         // .matches(/\d/) // macthes a number
-    check("name", "Name must be at least 3 characters")
+    check("name", "Name must be at least 3 characters and first and last name sepearted by a space")
         .isLength({min: 3})
         .trim()
-        .escape(),
-    check("email").custom(async(value) =>{
-        const existingEmail = await UserModel.findOne({email: value})
-        if (existingEmail){
-            throw new Error("Email already exists , please check Employee list")
-        }
-    })
+        .escape()
+        // .custom(async (value) => {                        // ensures first and last name (at least two words)
+        //     const wordInName = value.trim().split(/\s+/)
+        //     return wordInName.length >= 2
+        // }),
 ]
 
 
