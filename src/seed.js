@@ -16,7 +16,7 @@ console.log('Users Added')
 
 const jobs = [
     {
-        customerDetails: ['Name1', 'Mob', 'Address'],
+        customerDetails: ['Name1', 'Mob', 'https://maps.app.goo.gl/QPJXtBMv3iZsBCYd7'],
         toolsNeeded: ['Mower'],
         users: [ u[1],u[2]],
         tasks: ['Task1']

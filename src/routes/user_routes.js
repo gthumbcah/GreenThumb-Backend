@@ -28,8 +28,8 @@ const newUserValidate = [
         }),
     check("password", "Please ensure password is at least 10 characters and has a number")
         // .isLength(10)
-        .trim()
-        .escape(),
+        .trim() // removes white space 
+        .escape(), // Changes HTML symbols for security reasons
         // .matches(/\d/) // macthes a number
     check("name", "Name must be at least 3 characters and first and last name sepearted by a space")
         .isLength({min: 3})

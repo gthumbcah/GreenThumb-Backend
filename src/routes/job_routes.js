@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { JobModel, UserModel } from "../db.js"
 import j_auth from '../middleware/j_auth.js'
+import { check, validationResult } from 'express-validator';
 
 
 
@@ -13,7 +14,35 @@ router.get('/', async (req, res) => {
     res.send(req.jobs)
 })
 
-// create job  --- Admin Only - **
+const newJobValidate = [
+    check("customerDetails", "Please fill out details correctly")
+        .isArray(),
+    check("customerDetails.0")
+        .notEmpty()
+    //  .custom(async (value) => {                        // ensures first and last name (at least two words)
+    //      const wordInName = value.trim().split(/\s+/)
+    //      return wordInName.length >= 2
+    // }),
+        .trim()
+
+
+
+
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+// create job  --- Admin Only
 router.post('/', async (req, res) => {
     try {
         const newJob = await (await JobModel.create(req.body)).populate('users')
