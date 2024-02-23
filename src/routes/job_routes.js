@@ -10,8 +10,7 @@ const router = Router()
 
 // View all Jobs -- Admin Only (onwers)
 router.get('/', async (req, res) => {
-    // res.send(await JobModel.find().populate('users'))
-    res.send(req.jobs)
+    res.send(await JobModel.find().populate('users'))
 })
 
 const newJobValidate = [
