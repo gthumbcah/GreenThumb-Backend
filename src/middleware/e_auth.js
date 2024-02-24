@@ -11,7 +11,8 @@ const e_auth = async (req, res, next) => {
       console.log(decodedToken.id);
 
       if (user && user.admin === true || decodedToken.id === req.params.id) {
-          next();
+        next();
+
       } else {
           return res.status(403).json({ message: "Only a manager can access" });
       }
