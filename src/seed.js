@@ -51,9 +51,9 @@ const j = await JobModel.insertMany(jobs)
 console.log('Jobs Added')
 
 const timeSheet = [
-    { users: u[1], job: j[0], total: 6 },
-    { users: u[1], job: j[1], total: 12 },
-    { users: u[3], job: j[1], total: 10 }
+    { user: u[1], job: j[0], total: 6 },
+    { user: u[1], job: j[1], total: 12 },
+    { user: u[3], job: j[1], total: 10 }
 ]
 
 await TimeSheetModel.deleteMany()
