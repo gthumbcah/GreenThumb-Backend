@@ -9,8 +9,8 @@ import { newJobValidate } from "../middleware/validations.js";
 
 const router = Router()
 
-// View all Jobs -- Admin Only (onwers)
-router.get('/', async (req, res) => {
+// View all Jobs -- Admin/ Onwers (list of jobs they are assoc with)
+router.get('/',j_auth, async (req, res) => {
     res.send(await JobModel.find().populate('users'))
 })
 
@@ -33,7 +33,7 @@ router.post('/', newJobValidate, async (req, res) => {
 })
 
 // read 1 job  -- ((Admin and owner))
-router.get('/:id', async (req, res) => {
+router.get('/:id',j_auth, async (req, res) => {
     const job = await JobModel.findById(req.params.id).populate('users')
     if (job) {
         res.send(job)
