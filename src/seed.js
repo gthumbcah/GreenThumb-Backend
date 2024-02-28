@@ -20,28 +20,28 @@ const jobs = [
         toolsNeeded: ['Mower'],
         users: [ u[1],u[2]],
         tasks: ['Task1'],
-        dates: [Date('2024-02-24'),Date('2024-02-25'),Date('2024-02-26')]
+        dates: ["2024-02-24T00:00:00","2024-02-25T00:00:00","2024-02-26T00:00:00"]
     },
     {
         customerDetails: ['Name2', 'Mob', 'Address'],
         toolsNeeded: ['Mower'],
-        users: [ u[3], u[4]],
+        users: [ u[1], u[4]],
         tasks: ['Task1'],
-        dates: ['2024-02-24','2024-02-25']
+        dates: ["2024-02-16T00:00:00", "2024-02-17T00:00:00", ]
     },
     {
         customerDetails: ['Name3', 'Mob', 'Address'],
         toolsNeeded: ['Mower', 'Shovel', 'wheelbarrow'],
         users: [ u[1],u[3]],
         tasks: ['Task1', "Task 2"],
-        dates: [Date('2024-02-27'),Date('2024-02-28'),Date('2024-02-29'),Date('2024-03-01'),Date('2024-03-02')]
+        dates: ["2024-02-24T00:00:00","2024-02-25T00:00:00","2024-02-26T00:00:00","2024-02-27T00:00:00","2024-02-28T00:00:00"]
     },
     {
         customerDetails: ['Name4', 'Mob', 'Address'],
         toolsNeeded: ['bobcat', 'crane'],
         users: [ u[2],u[4]],
         tasks: ['Task1', "Task2", "Task3"],
-        dates: [Date('2024-02-24')]
+        dates: ["2024-02-24T00:00:00", "2024-02-24T09:00:00"]
     }
 ]
 
@@ -51,8 +51,8 @@ const j = await JobModel.insertMany(jobs)
 console.log('Jobs Added')
 
 const timeSheet = [
-    { users: u[1], job: j[0], total: 6 },
-    { users: u[1], job: j[1], total: 12 }
+    { users: u[1], job: j[0],clockIn: "2024-02-24T09:00:00", total: 6 },
+    { users: u[1], job: j[1],clockIn: "2024-02-16T09:00:00", total: 12 }
 ]
 
 await TimeSheetModel.deleteMany()
