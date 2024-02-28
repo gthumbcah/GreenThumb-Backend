@@ -1,10 +1,9 @@
 import { Router } from "express"
-import { UserModel } from "../db.js"
+import { UserModel, TimeSheetModel } from "../db.js"
 import bcrypt from 'bcrypt'
 import e_auth from '../middleware/e_auth.js'
 import {validationResult } from 'express-validator';
 import {newUserValidate} from "../middleware/validations.js";
-
 
 
 const router = Router()
@@ -101,62 +100,52 @@ router.delete('/:id', async (req, res) => {
 // Clock in
 router.post('/clock-in', e_auth, async (req, res) => {
     try {
-        // Extract user ID from request object
-        const userId = req.user._id;
-
-        // Create a new timesheet entry for clocking in
-        const newTimeSheetEntry = new TimeSheetModel({
-            user: userId, // Store the user ID
-            job: req.body.jobId, // Assuming the job ID is passed in the request body
-            clockIns: [new Date()], // Use the current date/time as the clock-in time
-            total: 0 // Initial total time
-        });
-
-        // Save the timesheet entry to the database
-        await newTimeSheetEntry.save();
-
-        // Respond with success message
-        res.status(201).json({ message: 'Clock in successful' });
+      // Extract user ID from request object
+      const userId = req.user._id;
+  
+      // Create a new timesheet entry for clocking in
+      const newTimeSheetEntry = new TimeSheetModel({
+        user: userId, // Store the user ID
+        clockIn: new Date(), // Use the current date/time as the clock-in time
+      });
+  
+      // Save the timesheet entry to the database
+      await newTimeSheetEntry.save();
+  
+      // Respond with success message
+      res.status(201).json({ message: 'Clock in successful' });
     } catch (error) {
-        // Respond with error message
-        console.error(error);
-        res.status(500).json({ error: 'Failed to clock in' });
+      // Respond with error message
+      console.error(error);
+      res.status(500).json({ error: 'Failed to clock in' });
     }
-});
-
-// Clock out
-router.post('/clock-out', e_auth, async (req, res) => {
+  });
+  
+  // Clock out
+  router.post('/clock-out', e_auth, async (req, res) => {
     try {
-        // Extract user ID from request object
-        const userId = req.user._id;
-
-        // Find the latest timesheet entry for the user
-        const latestTimeSheetEntry = await TimeSheetModel.findOne({ user: userId }).sort({ createdAt: -1 });
-
-        // Check if there's a valid timesheet entry
-        if (!latestTimeSheetEntry) {
-            return res.status(400).json({ error: 'No active timesheet found' });
-        }
-
-        // Update the latest timesheet entry with the clock-out timestamp
-        latestTimeSheetEntry.clockOuts.push(new Date());
-        await latestTimeSheetEntry.save();
-
-        // Calculate total time worked
-        const totalTimeWorked = calculateTotalTime(latestTimeSheetEntry.clockIns, latestTimeSheetEntry.clockOuts);
-
-        // Update the total time worked in the timesheet entry
-        latestTimeSheetEntry.total = totalTimeWorked;
-        await latestTimeSheetEntry.save();
-
-        // Respond with success message and total time worked
-        res.status(200).json({ message: 'Clock out successful', totalTimeWorked });
+      // Extract user ID from request object
+      const userId = req.user._id;
+  
+      // Find the latest timesheet entry for the user
+      const latestTimeSheetEntry = await TimeSheetModel.findOne({ user: userId }).sort({ createdAt: -1 });
+  
+      if (!latestTimeSheetEntry) {
+        return res.status(400).json({ error: 'No active timesheet found' });
+      }
+  
+      // Update the latest timesheet entry with the clock-out timestamp
+      latestTimeSheetEntry.clockOut = new Date();
+      await latestTimeSheetEntry.save();
+  
+      // Respond with success message
+      res.status(200).json({ message: 'Clock out successful' });
     } catch (error) {
-        // Respond with error message
-        console.error(error);
-        res.status(500).json({ error: 'Failed to clock out' });
+      // Respond with error message
+      console.error(error);
+      res.status(500).json({ error: 'Failed to clock out' });
     }
-});
+  });
 
 // Function to calculate total time worked
 function calculateTotalTime(clockIns, clockOuts) {

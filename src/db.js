@@ -37,14 +37,14 @@ const jobsSchema = new mongoose.Schema({
 const JobModel = mongoose.model('Job', jobsSchema)
 
 const timesheetsSchema = new mongoose.Schema({
-    users: { type: mongoose.ObjectId, ref: 'User', required: true},
+    users: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     job: { type: mongoose.ObjectId, ref: 'Job', required: true},
-    clockIns: [{ type: Date }],
-    clockOuts: [{ type: Date }], 
+    clockIn: { type: Date, required: true },
+    clockOut: { type: Date },
     // Front-end can return the math???
     total : { type: Number, required: true } // for development only    
-    
-})
+ 
+});
 
 const TimeSheetModel = mongoose.model('Timesheet', timesheetsSchema)
 
