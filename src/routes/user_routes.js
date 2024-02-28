@@ -98,5 +98,56 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+// Clock in
+router.post('/clock-in', e_auth, async (req, res) => {
+    try {
+        // Extract user ID from authentication token
+        const userId = req.user.id; // Assuming the user ID is stored in the request object after authentication
+
+        // Extract timestamp from request body
+        const { timestamp } = req.body;
+
+        // Create a new timesheet entry for clocking in
+        const newTimeSheetEntry = new TimeSheetModel({
+            userId,
+            clockIn: timestamp
+        });
+
+        // Save the timesheet entry to the database
+        await newTimeSheetEntry.save();
+
+        // Respond with success message
+        res.status(201).json({ message: 'Clock in successful' });
+    } catch (error) {
+        // Respond with error message
+        console.error(error);
+        res.status(500).json({ error: 'Failed to clock in' });
+    }
+});
+
+// Clock out
+router.post('/clock-out', e_auth, async (req, res) => {
+    try {
+        // Extract user ID from authentication token
+        const userId = req.user.id; // Assuming the user ID is stored in the request object after authentication
+
+        // Extract timestamp from request body
+        const { timestamp } = req.body;
+
+        // Find the latest timesheet entry for the user
+        const latestTimeSheetEntry = await TimeSheetModel.findOne({ userId }).sort({ createdAt: -1 });
+
+        // Update the latest timesheet entry with the clock out timestamp
+        latestTimeSheetEntry.clockOut = timestamp;
+        await latestTimeSheetEntry.save();
+
+        // Respond with success message
+        res.status(200).json({ message: 'Clock out successful' });
+    } catch (error) {
+        // Respond with error message
+        console.error(error);
+        res.status(500).json({ error: 'Failed to clock out' });
+    }
+});
 
 export default router
