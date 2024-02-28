@@ -19,25 +19,29 @@ const jobs = [
         customerDetails: ['Name1', 'Mob', 'https://maps.app.goo.gl/QPJXtBMv3iZsBCYd7'],
         toolsNeeded: ['Mower'],
         users: [ u[1],u[2]],
-        tasks: ['Task1']
+        tasks: ['Task1'],
+        dates: ['2024/02/24','2024/02/25','2024/02/26']
     },
     {
         customerDetails: ['Name2', 'Mob', 'Address'],
         toolsNeeded: ['Mower'],
         users: [ u[3], u[4]],
-        tasks: ['Task1']
+        tasks: ['Task1'],
+        dates: ['2024/02/24','2024/02/25']
     },
     {
         customerDetails: ['Name3', 'Mob', 'Address'],
         toolsNeeded: ['Mower', 'Shovel', 'wheelbarrow'],
         users: [ u[1],u[3]],
-        tasks: ['Task1', "Task 2"]
+        tasks: ['Task1', "Task 2"],
+        dates: ['2024/02/27','2024/02/28','2024/02/29','2024/03/01','2024/03/02']
     },
     {
         customerDetails: ['Name4', 'Mob', 'Address'],
         toolsNeeded: ['bobcat', 'crane'],
         users: [ u[2],u[4]],
-        tasks: ['Task1', "Task2", "Task3"]
+        tasks: ['Task1', "Task2", "Task3"],
+        dates: ['2024/02/24']
     }
 ]
 
