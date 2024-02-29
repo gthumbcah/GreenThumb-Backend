@@ -37,7 +37,7 @@ const jobsSchema = new mongoose.Schema({
 const JobModel = mongoose.model('Job', jobsSchema)
 
 const timesheetsSchema = new mongoose.Schema({
-    users: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: mongoose.ObjectId, ref: 'User', required: true },
     job: { type: mongoose.ObjectId, ref: 'Job', required: true},
     clockIn: { type: Date, required: true },
     clockOut: { type: Date },
