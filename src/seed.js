@@ -16,32 +16,32 @@ console.log('Users Added')
 
 const jobs = [
     {
-        customerDetails: ['Name1', 'Mob', 'https://maps.app.goo.gl/QPJXtBMv3iZsBCYd7'],
+        customerDetails: ['Jake Rose', '0411222333', 'https://maps.app.goo.gl/QPJXtBMv3iZsBCYd7'],
         toolsNeeded: ['Mower'],
         users: [ u[1],u[2]],
         tasks: ['Task1'],
         dates: ["2024-02-24","2024-02-25","2024-02-26"]
     },
     {
-        customerDetails: ['Name2', 'Mob', 'Address'],
+        customerDetails: ['Harold Daffodil', 'Mob', 'Address'],
         toolsNeeded: ['Mower'],
         users: [ u[1], u[4]],
         tasks: ['Task1'],
         dates: ["2024-02-16", "2024-02-17", ]
     },
     {
-        customerDetails: ['Name3', 'Mob', 'Address'],
+        customerDetails: ['Jean Waratah', 'Mob', 'Address'],
         toolsNeeded: ['Mower', 'Shovel', 'wheelbarrow'],
         users: [ u[1],u[3]],
         tasks: ['Task1', "Task 2"],
         dates: ["2024-02-24","2024-02-25","2024-02-26","2024-02-27","2024-02-28"]
     },
     {
-        customerDetails: ['Name4', 'Mob', 'Address'],
+        customerDetails: ['Sam Bindi', 'Mob', 'Address'],
         toolsNeeded: ['bobcat', 'crane'],
         users: [ u[2],u[4]],
         tasks: ['Task1', "Task2", "Task3"],
-        dates: ["2024-02-24", "2024-02-24"]
+        dates: ["2024-02-24"]
     }
 ]
 
