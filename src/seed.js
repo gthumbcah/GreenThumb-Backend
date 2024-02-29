@@ -52,9 +52,10 @@ console.log('Jobs Added')
 
 
 const timeSheet = [
-    { users: u[1], job: j[0],clockIn: "2024-02-24T09:00:00", total: 6 },
-    { users: u[1], job: j[1],clockIn: "2024-02-16T09:00:00", total: 12 },
+    { user: u[1], job: j[0],clockIn: "2024-02-24T09:00:00", total: 6 },
+    { user: u[1], job: j[1],clockIn: "2024-02-16T09:00:00", total: 12 },
     { user: u[3], job: j[1],clockIn: "2024-02-16T09:00:00", total: 10 }
+]
 
 
 await TimeSheetModel.deleteMany()
