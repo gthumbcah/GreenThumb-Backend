@@ -20,28 +20,28 @@ const jobs = [
         toolsNeeded: ['Mower'],
         users: [ u[1],u[2]],
         tasks: ['Task1'],
-        dates: ["2024-02-24T00:00:00","2024-02-25T00:00:00","2024-02-26T00:00:00"]
+        dates: ["2024-02-24","2024-02-25","2024-02-26"]
     },
     {
         customerDetails: ['Name2', 'Mob', 'Address'],
         toolsNeeded: ['Mower'],
         users: [ u[1], u[4]],
         tasks: ['Task1'],
-        dates: ["2024-02-16T00:00:00", "2024-02-17T00:00:00", ]
+        dates: ["2024-02-16", "2024-02-17", ]
     },
     {
         customerDetails: ['Name3', 'Mob', 'Address'],
         toolsNeeded: ['Mower', 'Shovel', 'wheelbarrow'],
         users: [ u[1],u[3]],
         tasks: ['Task1', "Task 2"],
-        dates: ["2024-02-24T00:00:00","2024-02-25T00:00:00","2024-02-26T00:00:00","2024-02-27T00:00:00","2024-02-28T00:00:00"]
+        dates: ["2024-02-24","2024-02-25","2024-02-26","2024-02-27","2024-02-28"]
     },
     {
         customerDetails: ['Name4', 'Mob', 'Address'],
         toolsNeeded: ['bobcat', 'crane'],
         users: [ u[2],u[4]],
         tasks: ['Task1', "Task2", "Task3"],
-        dates: ["2024-02-24T00:00:00", "2024-02-24T09:00:00"]
+        dates: ["2024-02-24", "2024-02-24"]
     }
 ]
 
