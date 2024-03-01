@@ -17,8 +17,7 @@ describe('App Test', () => {
     test('Login successful', async () => {
         expect(userLogin.status).toBe(200) 
         expect(userLogin.header['content-type']).toContain('json')
-        expect(userLogin.body.message).toBe('Login successful')
-        
+        expect(userLogin.body.message).toBe('Login successful')        
     })
 
     // test on the entry route
@@ -28,7 +27,6 @@ describe('App Test', () => {
         expect(user.header['content-type']).toContain('json')
         expect(user.body.info).toBe('Hello!')
     })
-
 
     // Login API ---------------------------------------------------------
     describe('Login POST test', () => {
@@ -109,8 +107,7 @@ describe('App Test', () => {
             expect(user.status).toBe(201)
             expect(user.header['content-type']).toContain('json')
             expect(user.body.name).toBe('tester')
-            expect(user.body.id).toBe(id)
-            
+            expect(user.body.id).toBe(id)            
         })
 
         // Confirms the GET by id is working
@@ -138,7 +135,6 @@ describe('App Test', () => {
             // Cleanup
             const cleanUp = await request(app).delete(`/users/${id}`).set('Authorization', `Bearer ${token}`)
         })
-
     })
 
     // Job API ----------------------------------------------------------------

@@ -6,7 +6,6 @@ const users = [
     { name: 'Mike', email: 'mike@email.com', password: '$2a$10$f3pmAXYTgWQn0a2XorQNqexBDzDPgFnT8Qx.AM4ZDTR5TpZpzTB0G'}, // password: mike (hashed)
     { name: 'Sally', email: 'sally@email.com', password: '$2a$10$Txkjg1bcT9NxLBunlh5Pm.HSm5Nll49m9bH8tXr2YKkDdpsW5ndu2'}, // password: sally (hashed)
     { name: 'Frank', email: 'frank@email.com', password: '$2a$10$nbq11VGm7BC2qBQIVyb/iuOgREpQqQUUBOkVndPcjVWy.iD.yi1bm'}, // password: frank (hashed)
-
 ]
 
 await UserModel.deleteMany()
@@ -50,13 +49,11 @@ console.log('Jobs deleted')
 const j = await JobModel.insertMany(jobs)
 console.log('Jobs Added')
 
-
 const timeSheet = [
     { user: u[1], job: j[0], date: "2024-02-16", hours: 6, rate: 25.99 },
     { user: u[1], job: j[1],date: "2024-02-24", hours: 8, rate: 29.88 },
     { user: u[3], job: j[1], date: "2024-02-16", hours: 10, rate: 25.99 }
 ]
-
 
 await TimeSheetModel.deleteMany();
 console.log('TimeSheets deleted');
@@ -65,6 +62,5 @@ await TimeSheetModel.insertMany(timeSheet.map(entry => ({
     earnings: entry.hours * entry.rate
 })));
 console.log('TimeSheets Added')
-
 
 closeConnection()

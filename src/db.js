@@ -31,7 +31,7 @@ const jobsSchema = new mongoose.Schema({
     users: [{ type: mongoose.ObjectId, ref: 'User' }],
     tasks: { type: Array },
     jobActive: { type: Boolean, default: true },
-    dates: { type: Array } // needs editted after depending on needs of calendar
+    dates: { type: Array } 
 })
 
 const JobModel = mongoose.model('Job', jobsSchema)
@@ -44,14 +44,11 @@ const timesheetsSchema = new mongoose.Schema({
     hours: { type: Number, required: true },
     rate: { type: Number, required: true},
     earnings: { type: Number}
-});
+})
 
 const TimeSheetModel = mongoose.model('Timesheet', timesheetsSchema)
 
-
 export { closeConnection, UserModel, JobModel, TimeSheetModel }
-
-
 
 // Notes ----------------------------------------------------------------
 

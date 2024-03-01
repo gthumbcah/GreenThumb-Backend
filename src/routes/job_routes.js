@@ -1,29 +1,24 @@
 import { Router } from "express"
 import { JobModel, UserModel } from "../db.js"
 import j_auth from '../middleware/j_auth.js'
-import { validationResult } from 'express-validator';
-import { newJobValidate } from "../middleware/validations.js";
-
-
-
+import { validationResult } from 'express-validator'
+import { newJobValidate } from "../middleware/validations.js"
 
 const router = Router()
 
-// View all Jobs -- Admin/ Onwers (list of jobs they are assoc with)
+// View all Jobs -- Admin/ Owners (list of jobs they are assoc with)
 router.get('/',j_auth, async (req, res) => {
     res.send(await JobModel.find().populate('users'))
 })
 
-
 // create job  --- Admin Only
 router.post('/', newJobValidate, async (req, res) => {
     try {
-
-        const errors = validationResult(req);
+        const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() })
         }
-
+        
         const newJob = await (await JobModel.create(req.body)).populate('users')
         res.send(newJob)
     }
@@ -37,7 +32,7 @@ router.get('/:id',j_auth, async (req, res) => {
     const job = await JobModel.findById(req.params.id).populate('users')
     if (job) {
         res.send(job)
-    } else{
+    } else {
         res.status(400).send({ 'Error': 'Job not found'})
     }
 })
@@ -50,7 +45,7 @@ router.put('/:id', async (req, res) => {
     if (job) {
         const updatedJob = await JobModel.findByIdAndUpdate(req.params.id, req.body, {new:true}).populate('users')
         res.send(updatedJob)
-    } else{
+    } else {
         res.status(400).send({ 'Error': 'Job not found'})
     }
 })
@@ -61,7 +56,7 @@ router.delete('/:id', async (req, res) => {
     if (job) {
         await JobModel.findByIdAndDelete(req.params.id)
         res.send(job) // Should we make it send back a message??
-    } else{
+    } else {
         res.status(400).send({ 'Error': 'Job not found'})
     }
 })
