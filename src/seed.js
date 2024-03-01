@@ -52,15 +52,18 @@ console.log('Jobs Added')
 
 
 const timeSheet = [
-    { user: u[1], job: j[0],clockIn: "2024-02-24T09:00:00", total: 6 },
-    { user: u[1], job: j[1],clockIn: "2024-02-16T09:00:00", total: 12 },
-    { user: u[3], job: j[1],clockIn: "2024-02-16T09:00:00", total: 10 }
+    { user: u[1], job: j[0], date: "2024-02-16", hours: 6, rate: 25.99 },
+    { user: u[1], job: j[1],date: "2024-02-24", hours: 8, rate: 29.88 },
+    { user: u[3], job: j[1], date: "2024-02-16", hours: 10, rate: 25.99 }
 ]
 
 
-await TimeSheetModel.deleteMany()
-console.log('TimeSheets deleted')
-await TimeSheetModel.insertMany(timeSheet)
+await TimeSheetModel.deleteMany();
+console.log('TimeSheets deleted');
+await TimeSheetModel.insertMany(timeSheet.map(entry => ({
+    ...entry,
+    earnings: entry.hours * entry.rate
+})));
 console.log('TimeSheets Added')
 
 
