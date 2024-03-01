@@ -7,8 +7,7 @@ const e_auth = async (req, res, next) => {
       const token = req.headers.authorization.split(' ')[1];
 
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const user = await UserModel.findById(decodedToken.id);
-      console.log(decodedToken.id);
+      const user = await UserModel.findById(decodedToken.id)
 
       if (user && user.admin === true || decodedToken.id === req.params.id) {
         next();
